@@ -1,0 +1,154 @@
+// Indexing policies
+
+{
+    "indexingMode": "consistent",
+    "automatic": true,
+    "includedPaths": [
+        {
+            "path": "/*"
+        }
+    ],
+    "excludedPaths": [
+        {
+            "path": "/\"_etag\"/?"
+        },
+        {
+            "path": "/questionAnswers/*"
+        }
+    ],
+    "compositeIndexes":[  
+        [  
+            {  
+                "path":"/type",
+                "order":"ascending"
+            },
+            {  
+                "path":"/id",
+                "order":"ascending"
+            }
+        ],
+        [  
+            {  
+                "path":"/type",
+                "order":"ascending"
+            },
+            {  
+                "path":"/id",
+                "order":"ascending"
+            },
+            {  
+                "path":"/id/questions/[]/number",
+                "order":"ascending"
+            }
+        ]
+    ]
+}
+
+// RECORDS
+
+// tests
+
+{
+    "id": "0b47da8a-6357-4ead-a9f2-a2f60cf40f90",
+    "type": "test",
+    "name": "Test Math",
+    "questions": [
+        {
+            "number": 1,
+            "name": "How many prime number exists?",
+            "answers": [
+                { "number": 1, "name": "Infinite", "isCorrect": true },
+                { "number": 2, "name": "125" },
+                { "number": 3, "name": "None" }
+            ]
+        },
+        {
+            "number": 2,
+            "name": "The PI constant equals to?",
+            "answers": [
+                { "number": 1, "name": "Approximately 3.14159", "isCorrect": true },
+                { "number": 2, "name": "314" },
+                { "number": 3, "name": "3.14E15" }
+            ]
+        },
+        {
+            "number": 3,
+            "name": "The result of expresion 1 + 2 * 3 equals to?",
+            "answers": [
+                { "number": 1, "name": "7", "isCorrect": true },
+                { "number": 2, "name": "9" },
+                { "number": 3, "name": "Cannot be calculated" }
+            ]
+        }
+    ]
+}
+
+{
+    "id": "78b1ec3d-aad4-4676-82de-123696634271",
+    "type": "test",
+    "name": "Test Science",
+    "questions": [
+        {
+            "number": 1,
+            "name": "A Dolphin is?",
+            "answers": [
+                { "number": 1, "name": "An aquatic mammal", "isCorrect": true },
+                { "number": 2, "name": "A fish" },
+                { "number": 3, "name": "An american football team" }
+            ]
+        },
+        {
+            "number": 2,
+            "name": "What body system is in control of transporting messages?",
+            "answers": [
+                { "number": 1, "name": "Nervous", "isCorrect": true },
+                { "number": 2, "name": "Circulatory" },
+                { "number": 3, "name": "Digestive" }
+            ]
+        },
+        {
+            "number": 3,
+            "name": "Where is DNA located?",
+            "answers": [
+                { "number": 1, "name": "In a cell's nucleus", "isCorrect": true },
+                { "number": 2, "name": "In cells, but not in the nucleus" },
+                { "number": 3, "name": "All around us" }
+            ]
+        }
+    ]
+}
+
+{
+    "id": "9eac95d7-a029-4241-a627-915afa60bb29",
+    "type": "test",
+    "name": "Test Geography",
+    "questions": [
+        {
+            "number": 1,
+            "name": "Which is the largest ocean on Earth?",
+            "answers": [
+                { "number": 1, "name": "Pacific Ocean", "isCorrect": true },
+                { "number": 2, "name": "Atlantic Ocean" },
+                { "number": 3, "name": "Arctic Ocean" }
+            ]
+        },
+        {
+            "number": 2,
+            "name": "From Paris (France) what direction should you travel to reach Madrid (Spain)?",
+            "answers": [
+                { "number": 1, "name": "South-west", "isCorrect": true },
+                { "number": 2, "name": "North-west" },
+                { "number": 3, "name": "South-east" }
+            ]
+        },
+        {
+            "number": 3,
+            "name": "Which of these countries has the smallest population?",
+            "answers": [
+                { "number": 1, "name": "New Zealand", "isCorrect": true },
+                { "number": 2, "name": "Portugal" },
+                { "number": 3, "name": "United Kingdom" }
+            ]
+        }
+    ]
+}

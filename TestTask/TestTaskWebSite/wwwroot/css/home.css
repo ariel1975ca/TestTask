@@ -1,0 +1,8 @@
+﻿html, body {
+    height: 100%;
+}
+
+.home {
+    max-width: 25rem;
+    padding: 1rem;
+}

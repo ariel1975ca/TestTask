@@ -1,0 +1,480 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TestTaskWebApi</name>
+    </assembly>
+    <members>
+        <member name="T:TestTaskWebApi.Controllers.TestTaskController">
+            <summary>
+              Handle the API interactions for the tests
+            </summary>
+        </member>
+        <member name="F:TestTaskWebApi.Controllers.TestTaskController._logger">
+            <summary>
+            The logger
+            </summary>
+        </member>
+        <member name="F:TestTaskWebApi.Controllers.TestTaskController._testTaskService">
+            <summary>
+            The test task service
+            </summary>
+        </member>
+        <member name="M:TestTaskWebApi.Controllers.TestTaskController.#ctor(TestTaskWebApi.Services.ITestTaskService,Microsoft.Extensions.Logging.ILogger{TestTaskWebApi.Controllers.TestTaskController})">
+            <summary>
+            Initializes a new instance of the <see cref="T:TestTaskWebApi.Controllers.TestTaskController" /> class.
+            </summary>
+            <param name="testTaskService">The Test Task service.</param>
+            <param name="logger">The logger.</param>
+        </member>
+        <member name="M:TestTaskWebApi.Controllers.TestTaskController.GetAvailableTests">
+            <summary>
+            Gets all the available tests.
+            </summary>
+            <returns>
+            An Array with all available tests
+            </returns>
+            <response code="200">Available tests retrieved.</response>
+            <response code="500">An unexpected error occurs.</response>
+        </member>
+        <member name="M:TestTaskWebApi.Controllers.TestTaskController.GetTestByCompilationId(System.Guid)">
+            <summary>
+            Gets the specified test details.
+            </summary>
+            <returns>
+            The requested test details
+            </returns>
+            <response code="200">Test retrieved.</response>
+            <response code="500">An unexpected error occurs.</response>
+        </member>
+        <member name="M:TestTaskWebApi.Controllers.TestTaskController.GetQuestion(System.Guid,System.Int32)">
+            <summary>
+            Gets the specified test's question.
+            </summary>
+            <returns>
+            The requested question data
+            </returns>
+            <response code="200">Question data retrieved.</response>
+            <response code="500">An unexpected error occurs.</response>
+        </member>
+        <member name="M:TestTaskWebApi.Controllers.TestTaskController.GetTestCompilationResults(System.Guid)">
+            <summary>
+            Gets the specified test compilation results.
+            </summary>
+            <returns>
+            The requested test compilation results data
+            </returns>
+            <response code="200">Results data retrieved.</response>
+            <response code="500">An unexpected error occurs.</response>
+        </member>
+        <member name="M:TestTaskWebApi.Controllers.TestTaskController.CreateTestCompilation(TestTaskWebApi.Models.ApiTestCompilation)">
+            <summary>
+            Create a new test compilation for the specified test and person.
+            </summary>
+            <param name="newTestCompilation">The test compilation to create.</param>
+            <response code="201">Test compilation created on the server.</response>
+            <response code="400">No test compilation specified or not valid.</response>
+            <response code="500">There was an error creating the test compilation.</response>
+        </member>
+        <member name="M:TestTaskWebApi.Controllers.TestTaskController.SaveSelectedQuestionAnswer(TestTaskWebApi.Models.ApiSelectedQuestionAnswer)">
+            <summary>
+            Save the user's answer selection for the specified question.
+            </summary>
+            <param name="selAnswer">The question and selected answer to save.</param>
+            <response code="201">Answer saved on the server.</response>
+            <response code="400">No Answer specified or not valid.</response>
+            <response code="500">There was an error saving the Answer.</response>
+        </member>
+        <member name="T:TestTaskWebApi.Models.ApiError">
+            <summary>
+             Base class for the Api error types
+            </summary>
+        </member>
+        <member name="P:TestTaskWebApi.Models.ApiError.StatusCode">
+            <summary>
+            Gets the status code.
+            </summary>
+            <value>
+            The status code.
+            </value>
+        </member>
+        <member name="P:TestTaskWebApi.Models.ApiError.StatusDescription">
+            <summary>
+            Gets the status description.
+            </summary>
+            <value>
+            The status description.
+            </value>
+        </member>
+        <member name="P:TestTaskWebApi.Models.ApiError.ErrorMessage">
+            <summary>
+            Gets the message.
+            </summary>
+            <value>
+            The message.
+            </value>
+        </member>
+        <member name="M:TestTaskWebApi.Models.ApiError.#ctor(System.Int32,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:TestTaskWebApi.Models.ApiError" /> class.
+            </summary>
+            <param name="statusCode">The status code.</param>
+            <param name="statusDescription">The status description.</param>
+        </member>
+        <member name="M:TestTaskWebApi.Models.ApiError.#ctor(System.Int32,System.String,TestTaskWebApi.Models.ApiErrorMessage)">
+            <summary>
+            Initializes a new instance of the <see cref="T:TestTaskWebApi.Models.ApiError" /> class.
+            </summary>
+            <param name="statusCode">The status code.</param>
+            <param name="statusDescription">The status description.</param>
+            <param name="message">The message.</param>
+        </member>
+        <member name="M:TestTaskWebApi.Models.ApiError.InternalServerError(TestTaskWebApi.Models.ApiErrorMessage)">
+            <summary>
+            Custom error for Status code 500 [InternalServerError]
+            </summary>
+            <param name="message">The message.</param>
+            <returns></returns>
+        </member>
+        <member name="M:TestTaskWebApi.Models.ApiError.NotFoundError(TestTaskWebApi.Models.ApiErrorMessage)">
+            <summary>
+            Custom error for Status code 404 [NotFound]
+            </summary>
+            <param name="message">The message.</param>
+            <returns></returns>
+        </member>
+        <member name="M:TestTaskWebApi.Models.ApiError.BadRequestError(TestTaskWebApi.Models.ApiErrorMessage)">
+            <summary>
+            Custom error for Status code 400 [BadRequest]
+            </summary>
+            <param name="message">The message.</param>
+            <returns></returns>
+        </member>
+        <member name="T:TestTaskWebApi.Models.ApiErrorMessage">
+            <summary>
+            An structured Error response
+            </summary>
+        </member>
+        <member name="P:TestTaskWebApi.Models.ApiErrorMessage.Code">
+            <summary>
+            Gets the code.
+            </summary>
+            <value>
+            The code.
+            </value>
+        </member>
+        <member name="P:TestTaskWebApi.Models.ApiErrorMessage.Message">
+            <summary>
+            Gets the status description.
+            </summary>
+            <value>
+            The status description.
+            </value>
+        </member>
+        <member name="M:TestTaskWebApi.Models.ApiErrorMessage.#ctor(System.Int32,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:TestTaskWebApi.Models.ApiErrorMessage"/> class.
+            </summary>
+            <param name="code">The code.</param>
+            <param name="message">The message.</param>
+        </member>
+        <member name="T:TestTaskWebApi.Models.ApiQuestion">
+            <summary>
+            Holds the Test's Question data
+            </summary>
+        </member>
+        <member name="P:TestTaskWebApi.Models.ApiQuestion.Number">
+            <summary>
+            Gets or sets the question number. [Required]
+            </summary>
+            <value>
+            The question number.
+            </value>
+        </member>
+        <member name="P:TestTaskWebApi.Models.ApiQuestion.Name">
+            <summary>
+            Gets or sets the question name. [Required, Max: 250 chars]
+            </summary>
+            <value>
+            The question name.
+            </value>
+        </member>
+        <member name="P:TestTaskWebApi.Models.ApiQuestion.Answers">
+            <summary>
+            Gets or sets the question number. [Required]
+            </summary>
+            <value>
+            The question number.
+            </value>
+        </member>
+        <member name="T:TestTaskWebApi.Models.ApiQuestionAnswer">
+            <summary>
+            Holds the Question's answer data
+            </summary>
+        </member>
+        <member name="P:TestTaskWebApi.Models.ApiQuestionAnswer.Number">
+            <summary>
+            Gets or sets the answer number. [Required]
+            </summary>
+            <value>
+            The answer number.
+            </value>
+        </member>
+        <member name="P:TestTaskWebApi.Models.ApiQuestionAnswer.Name">
+            <summary>
+            Gets or sets the answer name. [Required, Max: 250 chars]
+            </summary>
+            <value>
+            The answer name.
+            </value>
+        </member>
+        <member name="P:TestTaskWebApi.Models.ApiQuestionAnswer.IsCorrect">
+            <summary>
+            Gets or sets if the answer is the correct answer for the question. [Required]
+            </summary>
+            <value>
+            true if this is the question's correct answer; false otherwise.
+            </value>
+        </member>
+        <member name="T:TestTaskWebApi.Models.ApiSelectedQuestionAnswer">
+            <summary>
+            Holds the Selected Anwser for a Question
+            </summary>
+        </member>
+        <member name="P:TestTaskWebApi.Models.ApiSelectedQuestionAnswer.TestCompilationId">
+            <summary>
+            Gets or sets the identifier of the test compilation the question belogs to. [Required]
+            </summary>
+            <value>
+            The identifier of the test compilation the question belogs to.
+            </value>
+        </member>
+        <member name="P:TestTaskWebApi.Models.ApiSelectedQuestionAnswer.QuestionNumber">
+            <summary>
+            Gets or sets the question identifier. [Required]
+            </summary>
+            <value>
+            The question identifier.
+            </value>
+        </member>
+        <member name="P:TestTaskWebApi.Models.ApiSelectedQuestionAnswer.QuestionAnswerNumber">
+            <summary>
+            Gets or sets the question answer identifier. [Required]
+            </summary>
+            <value>
+            The question answer identifier.
+            </value>
+        </member>
+        <member name="T:TestTaskWebApi.Models.ApiTest">
+            <summary>
+            Holds the Test data
+            </summary>
+        </member>
+        <member name="P:TestTaskWebApi.Models.ApiTest.Id">
+            <summary>
+            Gets or sets the test identifier. [Required]
+            </summary>
+            <value>
+            The test identifier.
+            </value>
+        </member>
+        <member name="P:TestTaskWebApi.Models.ApiTest.Name">
+            <summary>
+            Gets or sets the test name. [Required, Max: 250 chars]
+            </summary>
+            <value>
+            The test name.
+            </value>
+        </member>
+        <member name="P:TestTaskWebApi.Models.ApiTest.NumberQuestions">
+            <summary>
+            Gets or sets the test's number of questions.
+            </summary>
+            <value>
+            The test's number of questions.
+            </value>
+        </member>
+        <member name="T:TestTaskWebApi.Models.ApiTestCompilation">
+            <summary>
+            Holds the Test Compilation data
+            </summary>
+        </member>
+        <member name="P:TestTaskWebApi.Models.ApiTestCompilation.Id">
+            <summary>
+            Gets or sets the test compilation identifier. [Required]
+            </summary>
+            <value>
+            The test compilation identifier.
+            </value>
+        </member>
+        <member name="P:TestTaskWebApi.Models.ApiTestCompilation.TestId">
+            <summary>
+            Gets or sets the identifier of the test been compiled. [Required]
+            </summary>
+            <value>
+            The identifier of the test been compiled.
+            </value>
+        </member>
+        <member name="P:TestTaskWebApi.Models.ApiTestCompilation.PersonName">
+            <summary>
+            Gets or sets the name of the person compiling the test. [Required, Max: 250 chars]
+            </summary>
+            <value>
+            The name of the person compiling the test.
+            </value>
+        </member>
+        <member name="T:TestTaskWebApi.Models.ApiTestCompilationResults">
+            <summary>
+            Holds the Test Compilation result data
+            </summary>
+        </member>
+        <member name="P:TestTaskWebApi.Models.ApiTestCompilationResults.CorrectAnswers">
+            <summary>
+            Gets or sets the number of correct answers in the compilation. [Required]
+            </summary>
+            <value>
+            The number of correct answers.
+            </value>
+        </member>
+        <member name="P:TestTaskWebApi.Models.ApiTestCompilationResults.NumberQuestions">
+            <summary>
+            Gets or sets the compiled test's number of questions.
+            </summary>
+            <value>
+            The compiled test's number of questions.
+            </value>
+        </member>
+        <member name="T:TestTaskWebApi.Services.ITestTaskService">
+            <summary>
+            Define the TestTaskService public interface
+            </summary>
+        </member>
+        <member name="M:TestTaskWebApi.Services.ITestTaskService.GetTests">
+            <summary>
+            Gets all the available tests.
+            </summary>
+            <returns>A list of api models</returns>
+        </member>
+        <member name="M:TestTaskWebApi.Services.ITestTaskService.GetTestByCompilationId(System.Guid)">
+            <summary>
+            Get the tests details defined by the compilation
+            </summary>
+            <param name="compilationId">The compilation identifier</param>
+            <returns>The tests details</returns>
+        </member>
+        <member name="M:TestTaskWebApi.Services.ITestTaskService.GetQuestion(System.Guid,System.Int32)">
+            <summary>
+            Get the test's question
+            </summary>
+            <param name="testId">The test identifier</param>
+            <param name="number">The question number</param>
+            <returns>The question details</returns>
+        </member>
+        <member name="M:TestTaskWebApi.Services.ITestTaskService.GetTestCompilationResults(System.Guid)">
+            <summary>
+            Get the compiled tests results
+            </summary>
+            <param name="compilationId">The compilation identifier</param>
+            <returns>The test results</returns>
+        </member>
+        <member name="M:TestTaskWebApi.Services.ITestTaskService.CreateTestCompilation(TestTaskWebApi.Models.ApiTestCompilation)">
+            <summary>
+            Create a new Test Compilation for the specified test and person.
+            </summary>
+            <returns>the updated Test Compilation object</returns>
+        </member>
+        <member name="M:TestTaskWebApi.Services.ITestTaskService.SaveSelectedQuestionAnswer(TestTaskWebApi.Models.ApiSelectedQuestionAnswer)">
+            <summary>
+            Save the user's answer selection for the specified question.
+            </summary>
+        </member>
+        <member name="T:TestTaskWebApi.Services.TestTaskService">
+            <summary>
+            handles all the Task Tests CRUD operations
+            </summary>
+        </member>
+        <member name="F:TestTaskWebApi.Services.TestTaskService._dbService">
+            <summary>
+            The database service
+            </summary>
+        </member>
+        <member name="F:TestTaskWebApi.Services.TestTaskService._logger">
+            <summary>
+            The logger
+            </summary>
+        </member>
+        <member name="M:TestTaskWebApi.Services.TestTaskService.#ctor(DataLayer.ITestTaskDbService,Microsoft.Extensions.Logging.ILogger{TestTaskWebApi.Services.TestTaskService})">
+            <summary>
+            Initializes a new instance of the <see cref="T:TestTaskWebApi.Services.TestTaskService"/> class.
+            </summary>
+            <param name="dbService">The database service.</param>
+            <param name="logger">The logger.</param>
+        </member>
+        <member name="M:TestTaskWebApi.Services.TestTaskService.GetTests">
+            <summary>
+            Gets all the available tests.
+            </summary>
+            <returns>A list of api models</returns>
+        </member>
+        <member name="M:TestTaskWebApi.Services.TestTaskService.GetTestByCompilationId(System.Guid)">
+            <summary>
+            Get the tests details defined by the compilation
+            </summary>
+            <param name="compilationId">The compilation identifier</param>
+            <returns>The tests details</returns>
+        </member>
+        <member name="M:TestTaskWebApi.Services.TestTaskService.GetQuestion(System.Guid,System.Int32)">
+            <summary>
+            Get the test's question
+            </summary>
+            <param name="testId">The test identifier</param>
+            <param name="number">The question number</param>
+            <returns>The question details</returns>
+        </member>
+        <member name="M:TestTaskWebApi.Services.TestTaskService.GetTestCompilationResults(System.Guid)">
+            <summary>
+            Get the compiled tests results
+            </summary>
+            <param name="compilationId">The compilation identifier</param>
+            <returns>The test results</returns>
+        </member>
+        <member name="M:TestTaskWebApi.Services.TestTaskService.CreateTestCompilation(TestTaskWebApi.Models.ApiTestCompilation)">
+            <summary>
+            Create a new Test Compilation for the specified test and person.
+            </summary>
+            <returns>the updated Test Compilation object</returns>
+        </member>
+        <member name="M:TestTaskWebApi.Services.TestTaskService.SaveSelectedQuestionAnswer(TestTaskWebApi.Models.ApiSelectedQuestionAnswer)">
+            <summary>
+            Save the user's answer selection for the specified question.
+            </summary>
+        </member>
+        <member name="M:TestTaskWebApi.Services.TestTaskService.GetApiTest(DataLayer.Models.Test)">
+            <summary>
+            Convert a Test db model to a ApiTest model response
+            </summary>
+            <param name="test">The db test document</param>
+            <returns>The equivalent Api model</returns>
+        </member>
+        <member name="M:TestTaskWebApi.Services.TestTaskService.GetApiQuestion(DataLayer.Models.Question)">
+            <summary>
+            Convert a Question db model to a ApiQuestion model response
+            </summary>
+            <param name="question">The db question document part</param>
+            <returns>The equivalent Api model</returns>
+        </member>
+        <member name="M:TestTaskWebApi.Services.TestTaskService.GetApiQuestionAnswer(DataLayer.Models.Answer)">
+            <summary>
+            Convert a Answer db model to a ApiQuestionAnswer model response
+            </summary>
+            <param name="answer">The db answer document part</param>
+            <returns>The equivalent Api model</returns>
+        </member>
+        <member name="M:TestTaskWebApi.Services.TestTaskService.GetApiTestCompilationResults(DataLayer.Models.TestCompilation)">
+            <summary>
+            Convert a Test Compilation db model to a ApiTestCompilationResults model response
+            </summary>
+            <param name="compilation">The db Test Compilation document part</param>
+            <returns>The equivalent Api model</returns>
+        </member>
+    </members>
+</doc>
